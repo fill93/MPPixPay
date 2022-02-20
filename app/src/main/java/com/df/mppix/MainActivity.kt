@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         MPPixHelper().initMPPix (
             activity = this,
-            tokenMP = "Bearer APP_USR-5",
+            tokenMP = "TOKEN MP",
             mpItem = mpItem,
             genratePayCallback = { response ->
                 val decodedString = Base64.decode(response.pointOfInteraction.transactioDataPayResponse.qrCodeBase64, Base64.DEFAULT)

@@ -8,13 +8,13 @@ class PixMainREPO(private val api: CallApi) : PixMainIMPL {
 
     override suspend fun postCreatePixPay(mpItem: MPItem) =
         api.postCreatePayID(
-            headerAuthorization = MPPixSession.tokenMP,
+            headerAuthorization = "Bearer ${MPPixSession.tokenMP}",
             body = mpItem
         ).await()
 
     override suspend fun verifyPixPay(idPayment: String) =
         api.getVerifyPixPayByID(
-            headerAuthorization = MPPixSession.tokenMP,
+            headerAuthorization = "Bearer ${MPPixSession.tokenMP}",
             idPayment = idPayment
         ).await()
 
