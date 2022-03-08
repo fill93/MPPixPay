@@ -4,10 +4,6 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
-/*data class MPItemData (
-    private val data: MPItem
-)*/
-
 @Parcelize
 data class MPItem (
     @Json(name = "transaction_amount")
@@ -15,7 +11,7 @@ data class MPItem (
     @Json(name = "description")
     val description: String,
     @Json(name = "payment_method_id")
-    val paymentMethodId: String,
+    val paymentMethodId: String = "pix",
     @Json(name = "payer")
     val payer: MPPayer
 ): Parcelable

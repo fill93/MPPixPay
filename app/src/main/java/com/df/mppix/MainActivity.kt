@@ -28,14 +28,16 @@ class MainActivity : AppCompatActivity(), MpPixCallback {
         setContentView(R.layout.activity_main)
 
         setListenres()
+        initMPPix()
+    }
 
+    private fun initMPPix() {
         mpPixHelper.initMPPix (
-            tokenMP = "APP_USR-5",
+            tokenMP = "APP_USR-",
             mpItem = MPItem(
-                0.12,
-                "RIFA",
-                "pix",
-                MPPayer("filipepitel.fp@gmail.com", "FILIPE", "PIMENTEL")
+                transactionAmount = 0.11,
+                description = "RIFA",
+                payer = MPPayer("filipepimentel.fp@gmail.com", "FILIPE", "PIMENTEL")
             ),
             mpPixCallback = this
         )
@@ -68,10 +70,12 @@ class MainActivity : AppCompatActivity(), MpPixCallback {
     }
 
     override fun verifyPayCallback(response: VerifyPayResponse) {
-        Log.i("JKK", ":::: s ${response.status}")
+        Log.i("JKK", "::verify:: ${response.status}")
+        tv_status_pay.text = response.status
     }
 
     override fun errorPayCallback(response: String) {
-        Log.i("JKK", ":::: $response")
+        Log.i("JKK", "::Error:: $response")
+        tv_status_pay.text = response
     }
 }
