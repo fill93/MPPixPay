@@ -2,10 +2,8 @@ package com.df.mppixpay.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.df.mppixpay.R
 import com.df.mppixpay.session.MPPixSession
-import kotlinx.android.synthetic.main.activity_pix_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PixMainActivity : AppCompatActivity() {
@@ -18,38 +16,26 @@ class PixMainActivity : AppCompatActivity() {
 
         setObservers()
 
-        if (MPPixSession.idPayment.isBlank() || MPPixSession.idPayment.isEmpty()) {
-            postCreatePixPay()
-        } else {
-            verifyPixPay()
+        if (intent.hasExtra("KEY")) {
+            if (intent.getStringExtra("KEY") == "CREATE_PAY") {
+                viewModel.postCreatePixPay(MPPixSession.mpItem)
+            } else {
+                viewModel.verifyPixPay(MPPixSession.idPayment)
+            }
         }
-
-    }
-
-    private fun postCreatePixPay() {
-        Log.i("JKK", ":::: A")
-        viewModel.postCreatePixPay(MPPixSession.mpItem)
-    }
-
-    private fun verifyPixPay() {
-        Log.i("JKK", ":::: B")
-        viewModel.verifyPixPay(MPPixSession.idPayment)
     }
 
     private fun setObservers() {
         viewModel.successCreatePayMLD.observe(this) {
-            MPPixSession.genratePayCallback(it)
+            MPPixSession.mpPixCallback.createPayCallback(it)
             finish()
         }
         viewModel.successVerifyPayMLD.observe(this) {
-            MPPixSession.verifyPayCallback(it)
+            MPPixSession.mpPixCallback.verifyPayCallback(it)
             finish()
         }
-        /*viewModel.loadingMLD.observe(this) {
-            progressBar.visibility = it
-        }*/
         viewModel.errorMLD.observe(this) {
-            MPPixSession.errorPay(it.message.toString())
+            MPPixSession.mpPixCallback.errorPayCallback(it.message.toString())
             finish()
         }
     }

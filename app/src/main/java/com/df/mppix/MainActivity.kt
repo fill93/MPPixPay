@@ -9,15 +9,19 @@ import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.df.mppixpay.callback.MpPixCallback
 import com.df.mppixpay.data.model.MPItem
 import com.df.mppixpay.data.model.MPPayer
+import com.df.mppixpay.responses.CreatePayResponse
+import com.df.mppixpay.responses.VerifyPayResponse
 import com.df.mppixpay.session.MPPixHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MpPixCallback {
 
     private var pixCopiaCola = ""
     private var idPayment: String = ""
+    private val mpPixHelper = MPPixHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,26 +29,18 @@ class MainActivity : AppCompatActivity() {
 
         setListenres()
 
-        val mpItem = MPItem(0.12, "RIFA", "pix", MPPayer("filipepitel.fp@gmail.com", "FILIPE", "PIMENTEL"))
-
-        MPPixHelper().initMPPix (
-            activity = this,
-            tokenMP = "TOKEN MP",
-            mpItem = mpItem,
-            genratePayCallback = { response ->
-                val decodedString = Base64.decode(response.pointOfInteraction.transactioDataPayResponse.qrCodeBase64, Base64.DEFAULT)
-                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                qrcode_image.setImageBitmap(decodedByte)
-                pixCopiaCola = response.pointOfInteraction.transactioDataPayResponse.qrCode
-                idPayment = response.id
-            },
-            verifyPayCallback = { response ->
-                Log.i("JKK", ":::: s ${response.status}")
-            },
-            errorPay = {
-                Log.i("JKK", ":::: $it")
-            }
+        mpPixHelper.initMPPix (
+            tokenMP = "APP_USR-5",
+            mpItem = MPItem(
+                0.12,
+                "RIFA",
+                "pix",
+                MPPayer("filipepitel.fp@gmail.com", "FILIPE", "PIMENTEL")
+            ),
+            mpPixCallback = this
         )
+
+        mpPixHelper.createMPPixPay(this)
     }
 
     private fun setListenres() {
@@ -56,10 +52,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         bt_pix_verify_pay.setOnClickListener {
-            MPPixHelper().verifyMPPixPay (
+            mpPixHelper.verifyMPPixPay (
                 activity = this,
                 idPayment = idPayment
             )
         }
+    }
+
+    override fun createPayCallback(response: CreatePayResponse) {
+        val decodedString = Base64.decode(response.pointOfInteraction.transactioDataPayResponse.qrCodeBase64, Base64.DEFAULT)
+        val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        qrcode_image.setImageBitmap(decodedByte)
+        pixCopiaCola = response.pointOfInteraction.transactioDataPayResponse.qrCode
+        idPayment = response.id
+    }
+
+    override fun verifyPayCallback(response: VerifyPayResponse) {
+        Log.i("JKK", ":::: s ${response.status}")
+    }
+
+    override fun errorPayCallback(response: String) {
+        Log.i("JKK", ":::: $response")
     }
 }
