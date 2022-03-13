@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), MpPixCallback {
 
     private fun initMPPix() {
         mpPixHelper.initMPPix (
-            tokenMP = "APP_USR-5641631835692104-091123-8afddbc9f608ae947513a67a3330799f-533881075",
+            tokenMP = "APP_USR-",
             mpItem = MPItem(
                 transactionAmount = 0.11,
                 description = "RIFA",
