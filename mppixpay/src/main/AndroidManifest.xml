@@ -5,7 +5,6 @@
 
     <application
         android:name=".util.di.Application"
-        tools:replace="android:name"
         >
         <activity
             android:name=".ui.PixMainActivity"

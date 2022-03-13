@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdk 21
         targetSdk 31
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.0.4"
 
         //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 
     //koin
-    implementation "io.insert-koin:koin-android:3.0.1"
+    //implementation "io.insert-koin:koin-android:3.0.1"
 
     //CAMADA DE REDE
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'

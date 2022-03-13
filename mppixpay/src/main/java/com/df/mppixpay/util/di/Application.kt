@@ -1,17 +1,13 @@
 package com.df.mppixpay.util.di
 
 import android.app.Application
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.GlobalContext.startKoin
-import org.koin.core.logger.Level
 
 class Application: Application() {
-
     override fun onCreate() {
+
         super.onCreate()
 
-        startKoin {
+        /*startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@Application)
             modules(
@@ -20,7 +16,7 @@ class Application: Application() {
                     repositoryesModule,
                     apisModule
                 )
-            )
+            )*/
             /*koin.loadModules(
                 listOf(
                     viewModelsModule,
@@ -29,7 +25,7 @@ class Application: Application() {
                 )
             )*/
             //koin.createRootScope()
-        }
+        //}
     }
 
 }

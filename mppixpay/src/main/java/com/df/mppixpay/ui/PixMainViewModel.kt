@@ -2,8 +2,10 @@ package com.df.mppixpay.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.df.mppixpay.data.api.CallApi
 import com.df.mppixpay.data.repository.PixMainIMPL
 import com.df.mppixpay.data.model.MPItem
+import com.df.mppixpay.data.repository.PixMainREPO
 import com.df.mppixpay.responses.CreatePayResponse
 import com.df.mppixpay.responses.VerifyPayResponse
 import kotlinx.coroutines.CoroutineScope
@@ -12,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class PixMainViewModel(private val repository: PixMainIMPL): ViewModel() {
+class PixMainViewModel: ViewModel() {
 
     val successCreatePayMLD by lazy { MutableLiveData<CreatePayResponse>() }
     val successVerifyPayMLD by lazy { MutableLiveData<VerifyPayResponse>() }
@@ -22,7 +24,7 @@ class PixMainViewModel(private val repository: PixMainIMPL): ViewModel() {
     fun postCreatePixPay(mpItem: MPItem) = launchSilent{
         try {
             //loadingMLD.postValue(View.VISIBLE)
-            successCreatePayMLD.postValue(repository.postCreatePixPay(mpItem))
+            successCreatePayMLD.postValue(PixMainREPO().postCreatePixPay(mpItem))
         } catch (e: Exception) {
             errorMLD.postValue(e)
         } finally {
@@ -33,7 +35,7 @@ class PixMainViewModel(private val repository: PixMainIMPL): ViewModel() {
     fun verifyPixPay(idPayment: String) = launchSilent {
         try {
             //loadingMLD.postValue(View.VISIBLE)
-            successVerifyPayMLD.postValue(repository.verifyPixPay(idPayment))
+            successVerifyPayMLD.postValue(PixMainREPO().verifyPixPay(idPayment))
         } catch (e: Exception) {
             errorMLD.postValue(e)
         } finally {
